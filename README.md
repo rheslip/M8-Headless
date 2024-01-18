@@ -73,7 +73,7 @@ Linux
 
 I'm not going to publish an image for the PI because building it from scratch is educational. Appreciate that I spent days figuring this out!
 
-I originally used the full release of Raspberry Pi Bullseye (32 bit) but the response to the keys was very laggy at times. I switched to DietPi (another couple days work) and the lag issue is greatly reduced. There are still short delays from pressing a key till you see the response on the display at times.
+I originally used the full release of Raspberry Pi Bullseye (32 bit) but the response to the keys was very laggy at times. I switched to DietPi (another couple days work) and the lag issue was greatly reduced. There are still short delays from pressing a key till you see the response on the display at times.
 
 these are my notes on how to build the image - this is NOT a shell script, its just my way of taking notes:
 
@@ -131,7 +131,7 @@ gpio=27=ip,pu   # half battery level input
 
 gpio=22=ip,pu # 3/4 battery level
 
-
+- thats it for changes to /boot/config.txt
 
 - install software we need to build M8C and the FT driver
 
