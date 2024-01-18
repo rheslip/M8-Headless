@@ -62,12 +62,12 @@ You can wire the DAC directly to the Teensy's I2S pins for audio. Other M8 headl
 
 The battery is wired to a 2.1mm power jack so it can be charged with an external charger. I plan to embed the USB C charging module (linked above) in the enclosure at some point.
 
-I wired up a battery gauge using two MIC803-30, a MIC803-31 (what I had) and a resistor divider chain. These pull PI gpio pins 17,27 and 22 low in sequence as the battery voltage drops. I extended the TFT driver low battery code to draw four different battery icons based on the GPIO inputs. I may put the code here as an example of tweeking the TFT driver but its pretty specific to the circuit I used.
+I wired up a battery gauge using two MIC803-30, a MIC803-31 (what I had) and a resistor divider chain. These pull PI gpio pins 17,27 and 22 low in sequence as the battery voltage drops. I modded the TFT driver low battery code to draw four different battery icons based on the GPIO inputs. The modded code is here as an example of tweeking the TFT driver but its pretty specific to the circuit I used.
 
 
 Enclosure
 
-You will find 3D printable enclosure in OpenSCAD for this project. Its still a work in progress. Its a bit taller, wider and thicker than the M8. The enclosure needs lots of ventilation - heatsinks were added to the Teensy and the Pi. The Pi overheat icon appears on the display sometimes when there is a lot of screen activity and CPU use.
+There is 3D printable enclosure in OpenSCAD for this project. Its still a work in progress. Its a bit taller, wider and thicker than the M8. The enclosure needs lots of ventilation - heatsinks were added to the Teensy and the Pi. The Pi overheat icon appears on the display sometimes when there is a lot of screen activity and CPU use.
 
 
 TFT driver
@@ -81,14 +81,14 @@ You will want to configure your Pi display for 640x480 so it downscales nicely t
 
 GPIO Keys
 
-As you will see in /boot/config.txt I used GPIO keys to generate keypress events which are read by the M8C display software. I used the default keycodes for M8C to keep things simple. The other M8 headless implementations I've seen use a Python app running in the background to scan the keys and send keycodes - pretty dumb when there is already a device tree overlay that does exactly that.
+I used GPIO keys to generate keypress events which are read by the M8C display software - see /boot/config.txt. It uses the default keycodes for M8C to keep things simple. The other M8 headless implementations I've seen use a Python app running in the background to scan the keys and send keycodes. Why not use the device tree overlay intended for that purpose ?
 
 
 Linux
 
-There is no prebuilt image for the PI because building it from scratch is educational. Appreciate that I spent days figuring this out!
+There is no prebuilt image for the PI - building it from scratch is educational. This took days of research and testing to get a recipe that works!
 
-I originally used the full release of Raspberry Pi Bullseye (32 bit) but the response to the keys was very laggy at times. Switched to DietPi (another couple days work) and the lag issue was greatly reduced. There are still short delays from pressing a key till you see the response on the display at times.
+Started with Raspberry Pi Bullseye Desktop (32 bit) but the response to the keys was very laggy at times. Switched to DietPi (another couple days work) and the lag issue was greatly reduced. There are still short delays now and then from a keypress until you see the response on the display - Linux swapping, a background task kicking in? Possible performance improvements: R/O filesystem, log to ramdisk etc
 
 My notes on how to build the image - NOT a shell script, its just my way of making notes:
 
