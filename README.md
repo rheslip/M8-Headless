@@ -7,15 +7,15 @@
  
  Why?
 
-I wanted to try the Dirtywave M8 tracker without spending $$$ on the real deal. I have seen other similar projects using Raspberry Pi 4 but I figured it could be done with a Raspberry Pi Zero 2 W. This build is smaller, cheaper, consumes less power and if I do say so myself a lot more elegant than the other standalone M8 Headless projects I've seen.
+I wanted to try the Dirtywave M8 tracker without spending $$$ on the real deal. I have seen other similar projects using Raspberry Pi 4 but I figured it could be done with a Raspberry Pi Zero 2 W. This build is smaller, cheaper, consumes less power and if I do say so myself is more elegant than the other standalone M8 Headless projects I've seen.
  
  Its relatively cheap to build ~ $150 but it requires serious electronic building skills and experience configuring Linux. 
  
  Why Not? 
  
-The headless version does not support audio input, MIDI, or touchscreen. If you want the full functions of an M8, buy an M8. If you don't like fiddling with electronics and Linux for days on end, buy an M8.
+The headless M8 firmware does not support audio input, MIDI, or touchscreen. If you want the full functions of an M8, buy an M8. If you don't like fiddling with electronics and Linux for days on end, buy an M8.
  
- I have spent at least 60 hours on the project and its still not really finished. Most of that time was researching and configuring Linux to boot into M8C, installing the TFT driver, configuring the GPIOs etc. The actual electronics build was fairly straightforward.
+ I have spent at least 60 hours on the project and its still not really finished. Most of that time was researching and configuring Linux to boot into M8C, installing the TFT driver, configuring the GPIOs etc. The actual electronics build was fairly straightforward. The 3D printed enclosure is still in progress but usable.
  
 
  
@@ -37,7 +37,7 @@ The headless version does not support audio input, MIDI, or touchscreen. If you 
  
  5V Step down regulator - I used a cheap one from Aliexpress. You could use a 1S Lipoly with a 5V stepup regulator instead.
  
- Audio DAC - I used a UDA1334 module https://www.adafruit.com/product/3678. actually I used a cheap knockoff of the Adafruit from Aliexpress
+ Audio DAC - UDA1334 module https://www.adafruit.com/product/3678. I used a cheap knockoff from Aliexpress
  
  SD cards for the Teensy and Pi - see the M8 site for recommended cards for the Teensy
  
@@ -56,16 +56,18 @@ There is no wiring diagram. If you can't figure it out from the code and config 
 
 Wire the display to the PI's SPI port, the keyswitches to the GPIO pins specified in /boot/config.txt. I made a drilling template to mount the Kailh switches on the .1" grid protoboard - the leads more or less fit on .1" grid but the plastic mounting pins do not.
 
-I used a tact switch from Pi physical pin 5 to GND as a shutdown switch. This is enabled in /boot/config.txt.
+There is a tact switch from Pi physical pin 5 to GND as a shutdown switch. This is enabled in /boot/config.txt.
 
 You can wire the DAC directly to the Teensy's I2S pins for audio. Other M8 headless projects seem to loop USB audio from the Teensy to the PI to a DAC attached to the Pi which is not very elegant and chews needless CPU cycles. The UDA1334 module works with its default settings - connect Teensy LRCLK (pin 20), BLCK (pin 21) and OUT1A (pin 7) to the module. The headphone out is very loud so you will probably have to turn down the master level in the M8 mixer screen.
+
+The battery is wired to a 2.1mm power jack so it can be charged with an external charger. I plan to embed the USB C charging module (linked above) in the enclosure at some point.
 
 I wired up a battery gauge using two MIC803-30, a MIC803-31 (what I had) and a resistor divider chain. These pull PI gpio pins 17,27 and 22 low in sequence as the battery voltage drops. I extended the TFT driver low battery code to draw four different battery icons based on the GPIO inputs. I may put the code here as an example of tweeking the TFT driver but its pretty specific to the circuit I used.
 
 
 Enclosure
 
-I designed a 3D printed enclosure in OpenSCAD for this project. Its still a work in progress but I'll put the files here eventually. Its a bit taller, wider and thicker than the M8. The enclosure needs lots of ventilation and I added heatsinks to the Teensy and the Pi. I'm still getting the Pi overheat icon on the display sometimes when playing songs which causes a lot of screen updates and CPU use. 
+You will find 3D printable enclosure in OpenSCAD for this project. Its still a work in progress. Its a bit taller, wider and thicker than the M8. The enclosure needs lots of ventilation - heatsinks were added to the Teensy and the Pi. The Pi overheat icon appears on the display sometimes when there is a lot of screen activity and CPU use.
 
 
 TFT driver
@@ -84,11 +86,11 @@ As you will see in /boot/config.txt I used GPIO keys to generate keypress events
 
 Linux
 
-I'm not going to publish an image for the PI because building it from scratch is educational. Appreciate that I spent days figuring this out!
+There is no prebuilt image for the PI because building it from scratch is educational. Appreciate that I spent days figuring this out!
 
-I originally used the full release of Raspberry Pi Bullseye (32 bit) but the response to the keys was very laggy at times. I switched to DietPi (another couple days work) and the lag issue was greatly reduced. There are still short delays from pressing a key till you see the response on the display at times.
+I originally used the full release of Raspberry Pi Bullseye (32 bit) but the response to the keys was very laggy at times. Switched to DietPi (another couple days work) and the lag issue was greatly reduced. There are still short delays from pressing a key till you see the response on the display at times.
 
-these are my notes on how to build the image - this is NOT a shell script, its just my way of taking notes:
+My notes on how to build the image - NOT a shell script, its just my way of making notes:
 
 download the Raspberry Pi 32 bit Bullseye (ARMv7) image from https://dietpi.com/downloads/images/
 
