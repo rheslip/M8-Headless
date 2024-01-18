@@ -4,9 +4,9 @@
  
  Why?
 
-I wanted to try the M8 tracker without spending $$$ on the real deal. I have seen other similar projects using Raspberry Pi 4 but I figured it could be done with a Raspberry Pi Zero 2 W. This build is smaller, cheaper and consumes much less power than the other standalone M8 Headless projects I've seen.
+I wanted to try the Dirtywave M8 tracker without spending $$$ on the real deal. I have seen other similar projects using Raspberry Pi 4 but I figured it could be done with a Raspberry Pi Zero 2 W. This build is smaller, cheaper, consumes less power and if I do say so myself a lot more elegant than the other standalone M8 Headless projects I've seen.
  
- This project is relatively cheap to build ~ $150. It requires excellent electronic building skills and experience configuring Linux. 
+ Its relatively cheap to build ~ $150. It requires serious electronic building skills and experience configuring Linux. 
  
  Why Not? 
  
@@ -32,7 +32,9 @@ I wanted to try the M8 tracker without spending $$$ on the real deal. I have see
  
  Battery pack and charger. I used a 2S Lipoly 1500mah pack which gives around 4 hrs usage. I used this charger module https://www.aliexpress.com/item/1005006042283437.html?spm=a2g0o.order_list.order_list_main.40.38ee18029ofbrc
  
- Audio DAC - I used a UDA1334 module https://www.adafruit.com/product/3678 A PCM5102 module worked with M8 Web display on windows but not on Linux - very odd
+ 5V Step down regulator - I used a cheap one from Aliexpress. You could use a 1S Lipoly with a 5V stepup regulator instead.
+ 
+ Audio DAC - I used a UDA1334 module https://www.adafruit.com/product/3678. actually I used a cheap knockoff of the Adafruit from Aliexpress
  
  SD cards for the Teensy and Pi - see the M8 site for recommended cards for the Teensy
  
@@ -40,19 +42,23 @@ I wanted to try the M8 tracker without spending $$$ on the real deal. I have see
  
  Misc other stuff - wire, on/off switch, tact switch for shutting down the Pi
  
+ Power Consumption
+ 
+ I measure about 320ma for the whole shebang (Pi and Teensy) at 7.6V when idle. This jumps up to around 400ma when the screen gets very busy as when a song is playing.
+ 
  
  Wiring
  
-There is no wiring diagram. If you can't figure it out from the code and config files you don't have the skills to complete this project. Wire the display to the PI's SPI port, the keyswitches to the GPIO pins specified in /boot/config.txt. I used a tact switch from Pi physical pin 5 to GND as a shutdown switch. This is enabled in /boot/config.txt.
+There is no wiring diagram. If you can't figure it out from the code and config files then you don't have the skills to complete this project. Wire the display to the PI's SPI port, the keyswitches to the GPIO pins specified in /boot/config.txt. I used a tact switch from Pi physical pin 5 to GND as a shutdown switch. This is enabled in /boot/config.txt.
 
-I don't think its very well known but you can wire the DAC directly to the Teensy's I2S pins for audio. Other M8 headless projects seem to loop USB audio from the Teensy to the PI to a DAC attached to the Pi which is not very elegant and chews needless CPU cycles. The UDA1334 module works with its default settings - connect Teensy LRCLK (pin 20), BLCK (pin 21) and OUT1A (pin 7) to the module. The headphone out is very loud so you will probably have to turn down the master level in the M8 mixer screen.
+You can wire the DAC directly to the Teensy's I2S pins for audio. Other M8 headless projects seem to loop USB audio from the Teensy to the PI to a DAC attached to the Pi which is not very elegant and chews needless CPU cycles. The UDA1334 module works with its default settings - connect Teensy LRCLK (pin 20), BLCK (pin 21) and OUT1A (pin 7) to the module. The headphone out is very loud so you will probably have to turn down the master level in the M8 mixer screen.
 
 I wired up a battery gauge using two MIC803-30, a MIC803-31 (what I had) and a resistor divider chain. These pull PI gpio pins 17,27 and 22 low in sequence as the battery voltage drops. I extended the TFT driver low battery code to draw four different battery icons based on the GPIO inputs. I may put the code here as an example of tweeking the TFT driver but its pretty specific the the circuit I used.
 
 
 Enclosure
 
-I designed a 3D printed enclosure for this project. Its still a work in progress bit I'll put the files here eventually. Its a bit taller, wider and thicker than the M8.
+I designed a 3D printed enclosure in OpenSCAD for this project. Its still a work in progress but I'll put the files here eventually. Its a bit taller, wider and thicker than the M8. The enclosure needs lots of ventilation and I added heatsinks to the Teensy and the Pi. I'm still getting the Pi overheat icon on the display sometimes when playing songs which causes a lot of screen updates and CPU use. 
 
 
 TFT driver
@@ -192,9 +198,7 @@ make    # build M8C
 nano .config/openbox/lxde-rc.xml  #add the fragment of xml below. it goes near the bottom of the file in the applications section. this removes the decoration (bar above the app window)
 
 	<application name="*">
-	
-        <decor>no</decor>
-		
+        <decor>no</decor>	
         </application>
 		
 - to remove the menus comment the line @lxpanel --profile LXDE with a # in:
