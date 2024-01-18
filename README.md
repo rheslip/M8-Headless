@@ -50,6 +50,11 @@ I don't think its very well known but you can wire the DAC directly to the Teens
 I wired up a battery gauge using two MIC803-30, a MIC803-31 (what I had) and a resistor divider chain. These pull PI gpio pins 17,27 and 22 low in sequence as the battery voltage drops. I extended the TFT driver low battery code to draw four different battery icons based on the GPIO inputs.
 
 
+Enclosure
+
+I designed a 3D printed enclosure for this project. It still a work in progress bit I'll put the files here eventually
+
+
 TFT driver
 
 This is the magic that allows 25-45 fps on a PI Zero 2W. It copies the 640x480 X frame buffer to the TFT over the PI's SPI bus. https://github.com/juj/fbcp-ili9341.git 
