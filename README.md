@@ -4,17 +4,17 @@
  
  Why?
 
-I wanted to try the M8 tracker without spending $$$ on the real deal. I have seen other similar projects using Raspberry Pi 4 but I figured it would be done with a Raspberry Pi Zero 2 W. This build is smaller, cheaper and consumes much less power than the other projects I've seen.
+I wanted to try the M8 tracker without spending $$$ on the real deal. I have seen other similar projects using Raspberry Pi 4 but I figured it could be done with a Raspberry Pi Zero 2 W. This build is smaller, cheaper and consumes much less power than the other standalone M8 Headless projects I've seen.
  
  This project is relatively cheap to build ~ $150. It requires excellent electronic building skills and experience configuring Linux. 
  
  Why Not? 
  
- If you want the full functions of an M8, buy an M8. The headless version does not support audio input, MIDI, or touchscreen. If you build this, expect to spend a lot of time on it. If you don't like that sort of thing, buy an M8.
+ If you want the full functions of an M8, buy an M8. The headless version does not support audio input, MIDI, or touchscreen. If you build this, expect to spend a lot of time on it. If you don't like fiddling with electronics and Linux, buy an M8.
  
  I have spent at least 60 hours on the project and its still not really finished. Most of that time was researching and configuring Linux to boot into M8C, installing the TFT driver, configuring the GPIOs etc. The actual electronics build was fairly straightforward.
  
- The Recipe
+
  
  Hardware
  
@@ -32,7 +32,7 @@ I wanted to try the M8 tracker without spending $$$ on the real deal. I have see
  
  Battery pack and charger. I used a 2S Lipoly 1500mah pack which gives around 4 hrs usage. I used this charger module https://www.aliexpress.com/item/1005006042283437.html?spm=a2g0o.order_list.order_list_main.40.38ee18029ofbrc
  
- Audio DAC - I used a UDA1334 module https://www.adafruit.com/product/3678 A PCM5102 module worked with M8C on windows but not on Linux - very odd
+ Audio DAC - I used a UDA1334 module https://www.adafruit.com/product/3678 A PCM5102 module worked with M8 Web display on windows but not on Linux - very odd
  
  SD cards for the Teensy and Pi - see the M8 site for recommended cards for the Teensy
  
@@ -47,20 +47,21 @@ There is no wiring diagram. If you can't figure it out from the code and config 
 
 I don't think its very well known but you can wire the DAC directly to the Teensy's I2S pins for audio. Other M8 headless projects seem to loop USB audio from the Teensy to the PI to a DAC attached to the Pi which is not very elegant and chews needless CPU cycles. The UDA1334 module works with its default settings - connect Teensy LRCLK (pin 20), BLCK (pin 21) and OUT1A (pin 7) to the module. The headphone out is very loud so you will probably have to turn down the master level in the M8 mixer screen.
 
-I wired up a battery gauge using two MIC803-30, a MIC803-31 (what I had) and a resistor divider chain. These pull PI gpio pins 17,27 and 22 low in sequence as the battery voltage drops. I extended the TFT driver low battery code to draw four different battery icons based on the GPIO inputs.
+I wired up a battery gauge using two MIC803-30, a MIC803-31 (what I had) and a resistor divider chain. These pull PI gpio pins 17,27 and 22 low in sequence as the battery voltage drops. I extended the TFT driver low battery code to draw four different battery icons based on the GPIO inputs. I may put the code here as an example of tweeking the TFT driver but its pretty specific the the circuit I used.
 
 
 Enclosure
 
-I designed a 3D printed enclosure for this project. It still a work in progress bit I'll put the files here eventually
+I designed a 3D printed enclosure for this project. Its still a work in progress bit I'll put the files here eventually. Its a bit taller, wider and thicker than the M8.
 
 
 TFT driver
 
 This is the magic that allows 25-45 fps on a PI Zero 2W. It copies the 640x480 X frame buffer to the TFT over the PI's SPI bus. https://github.com/juj/fbcp-ili9341.git 
+
 Very helpful wiring diagrams and installation instructions: https://bytesnbits.co.uk/retropie-raspberry-pi-0-spi-lcd/
 
-You will want to configure your Pi display for 640x480 so it downscales nicely to 320x240 on the TFT. If the TFT display looks fuzzy check that you are not using altialiasing.
+You will want to configure your Pi display for 640x480 so it downscales nicely to 320x240 on the TFT. If the TFT display looks fuzzy check LXDE altialiasing may be turned on - see the O/S configuration notes below.
 
 
 GPIO Keys
@@ -76,11 +77,11 @@ I originally used the full release of Raspberry Pi Bullseye (32 bit) but the res
 
 these are my notes on how to build the image - this is NOT a shell script, its just my way of taking notes:
 
--download the Raspberry Pi 32 bit Bullseye (ARMv7) image from https://dietpi.com/downloads/images/
+download the Raspberry Pi 32 bit Bullseye (ARMv7) image from https://dietpi.com/downloads/images/
 
--image with Raspberry Pi imager and set the SSH option on 
+image with Raspberry Pi imager and set the SSH option on 
 
-- login via SSH: root dietpi (default user/password for this image. don't need sudo because you are root)
+login via SSH: root dietpi (default user/password for this image. don't need sudo because you are root)
 
 when you login via ssh, it runs an update script and then runs the config tool dietpi-launcher
 
@@ -92,11 +93,9 @@ when you login via ssh, it runs an update script and then runs the config tool d
 	
 	you have to "exit with install" - it finishes the final installation
 	
--changes to /boot/config.txt:
-
-nano /boot/config.txt 
+- changes to /boot/config.txt:
  
- - set to vga mode by uncommenting hdmi_group=1 and hdmi_mode=1
+set to vga mode by uncommenting hdmi_group=1 and hdmi_mode=1
  
 uncomment the hdmi_force-hotplug line so it always starts the display code
 
@@ -106,7 +105,7 @@ comment the #dtoverlay=vc4-kms-v3d line if present
  
 remove audio, SPI, I2C etc if enabled
 
--add the gpio-key mappings for the keys:
+- add the gpio-key mappings for the keys:
  
 dtoverlay=gpio-key,gpio=5,active_low=1,gpio_pull=up,label=down,keycode=108
 
@@ -132,7 +131,7 @@ gpio=27=ip,pu   # half battery level input
 
 gpio=22=ip,pu # 3/4 battery level
 
--exit Nano and save the file
+
 
 - install software we need to build M8C and the FT driver
 
@@ -156,13 +155,13 @@ mkdir build
 
 cd build
 
-# build line below assumes IlI9341 driver chip and low battery input on GPIO 17. I had to rotate my display as well
+- build line below assumes IlI9341 driver chip and low battery input on GPIO 17. I had to rotate my display as well
 
 cmake -DILI9341=ON -DGPIO_TFT_DATA_CONTROL=24 -DGPIO_TFT_RESET_PIN=25 -DSPI_BUS_CLOCK_DIVISOR=6 -DDISPLAY_ROTATE_180_DEGREES=ON -DSTATISTICS=0 -DLOW_BATTERY_PIN=17 ..
 
 make -j  # this builds the TFT driver
 
--create a systemd file to start up the driver
+- create a systemd file to start up the driver
 
 nano /etc/systemd/system/fbcp.service  # with contents:
 
@@ -210,7 +209,7 @@ Exec=/root/code/m8c/m8c
 
 - these tweeks are needed to get LXDE to hide the top bar etc
 
-nano .config/openbox/lxde-rc.xml  // add the fragment of xml below. it goes near the bottom of the file in the <applications> section. this removes the decoration (bar above the app window)
+nano .config/openbox/lxde-rc.xml  #add the fragment of xml below. it goes near the bottom of the file in the applications section. this removes the decoration (bar above the app window)
 
 	<application name="*">
 	
