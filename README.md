@@ -107,29 +107,29 @@ remove audio, SPI, I2C etc if enabled
 
 - add the gpio-key mappings for the keys:
  
-dtoverlay=gpio-key,gpio=5,active_low=1,gpio_pull=up,label=down,keycode=108
+	dtoverlay=gpio-key,gpio=5,active_low=1,gpio_pull=up,label=down,keycode=108
 
-dtoverlay=gpio-key,gpio=6,active_low=1,gpio_pull=up,label=up,keycode=103
+	dtoverlay=gpio-key,gpio=6,active_low=1,gpio_pull=up,label=up,keycode=103
 
-dtoverlay=gpio-key,gpio=13,active_low=1,gpio_pull=up,label=left,keycode=105
+	dtoverlay=gpio-key,gpio=13,active_low=1,gpio_pull=up,label=left,keycode=105
 
-dtoverlay=gpio-key,gpio=19,active_low=1,gpio_pull=up,label=right,keycode=106
+	dtoverlay=gpio-key,gpio=19,active_low=1,gpio_pull=up,label=right,keycode=106
 
-dtoverlay=gpio-key,gpio=26,active_low=1,gpio_pull=up,label=shift,keycode=42
+	dtoverlay=gpio-key,gpio=26,active_low=1,gpio_pull=up,label=shift,keycode=42
 
-dtoverlay=gpio-key,gpio=16,active_low=1,gpio_pull=up,label=enter,keycode=31
+	dtoverlay=gpio-key,gpio=16,active_low=1,gpio_pull=up,label=enter,keycode=31
 
-dtoverlay=gpio-key,gpio=20,active_low=1,gpio_pull=up,label=option,keycode=30
+	dtoverlay=gpio-key,gpio=20,active_low=1,gpio_pull=up,label=option,keycode=30
 
-dtoverlay=gpio-key,gpio=21,active_low=1,gpio_pull=up,label=play,keycode=57
+	dtoverlay=gpio-key,gpio=21,active_low=1,gpio_pull=up,label=play,keycode=57
 
-dtoverlay=gpio-shutdown    # for the shutdown button on default pin 5
+	dtoverlay=gpio-shutdown    # for the shutdown button on default pin 5
 
-gpio=17=ip,pu    # set gpio 17 (pin 11) as the low battery input
+	gpio=17=ip,pu    # set gpio 17 (pin 11) as the low battery input
 
-gpio=27=ip,pu   # half battery level input
+	gpio=27=ip,pu   # half battery level input
 
-gpio=22=ip,pu # 3/4 battery level
+	gpio=22=ip,pu # 3/4 battery level
 
 - thats it for changes to /boot/config.txt
 
@@ -165,19 +165,13 @@ make -j  # this builds the TFT driver
 
 nano /etc/systemd/system/fbcp.service  # with contents:
 
-[Unit]
-
-Description=Start up FBCP driver
-
-[Service]
-
-Type=oneshot
-
-ExecStart=/root/fbcp-ili9341/build/fbcp-ili9341
-
-[Install]
-
-WantedBy=multi-user.target
+	[Unit]
+	Description=Start up FBCP driver
+	[Service]
+	Type=oneshot
+	ExecStart=/root/fbcp-ili9341/build/fbcp-ili9341
+	[Install]
+	WantedBy=multi-user.target
 
 #start the service - will start on next boot:
 
