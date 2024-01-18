@@ -2,7 +2,7 @@
  M8 Headless recipe using Raspberry Pi Zero 2 W
  Jan 2024
  
- ![Alt text](https://github.com/rheslip/M8-Headless/Images/IMG_2588.jpg "DIY M8 Headless")
+ ![Alt text](https://github.com/rheslip/M8-Headless/blob/main/Images/IMG_2588.JPG "DIY M8 Headless")
  
  Why?
 
