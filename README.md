@@ -6,11 +6,11 @@
 
 I wanted to try the Dirtywave M8 tracker without spending $$$ on the real deal. I have seen other similar projects using Raspberry Pi 4 but I figured it could be done with a Raspberry Pi Zero 2 W. This build is smaller, cheaper, consumes less power and if I do say so myself a lot more elegant than the other standalone M8 Headless projects I've seen.
  
- Its relatively cheap to build ~ $150. It requires serious electronic building skills and experience configuring Linux. 
+ Its relatively cheap to build ~ $150 but it requires serious electronic building skills and experience configuring Linux. 
  
  Why Not? 
  
- If you want the full functions of an M8, buy an M8. The headless version does not support audio input, MIDI, or touchscreen. If you build this, expect to spend a lot of time on it. If you don't like fiddling with electronics and Linux, buy an M8.
+The headless version does not support audio input, MIDI, or touchscreen. If you want the full functions of an M8, buy an M8. If you don't like fiddling with electronics and Linux for days on end, buy an M8.
  
  I have spent at least 60 hours on the project and its still not really finished. Most of that time was researching and configuring Linux to boot into M8C, installing the TFT driver, configuring the GPIOs etc. The actual electronics build was fairly straightforward.
  
