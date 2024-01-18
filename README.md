@@ -53,7 +53,7 @@ There is no wiring diagram. If you can't figure it out from the code and config 
 
 You can wire the DAC directly to the Teensy's I2S pins for audio. Other M8 headless projects seem to loop USB audio from the Teensy to the PI to a DAC attached to the Pi which is not very elegant and chews needless CPU cycles. The UDA1334 module works with its default settings - connect Teensy LRCLK (pin 20), BLCK (pin 21) and OUT1A (pin 7) to the module. The headphone out is very loud so you will probably have to turn down the master level in the M8 mixer screen.
 
-I wired up a battery gauge using two MIC803-30, a MIC803-31 (what I had) and a resistor divider chain. These pull PI gpio pins 17,27 and 22 low in sequence as the battery voltage drops. I extended the TFT driver low battery code to draw four different battery icons based on the GPIO inputs. I may put the code here as an example of tweeking the TFT driver but its pretty specific the the circuit I used.
+I wired up a battery gauge using two MIC803-30, a MIC803-31 (what I had) and a resistor divider chain. These pull PI gpio pins 17,27 and 22 low in sequence as the battery voltage drops. I extended the TFT driver low battery code to draw four different battery icons based on the GPIO inputs. I may put the code here as an example of tweeking the TFT driver but its pretty specific to the circuit I used.
 
 
 Enclosure
@@ -85,7 +85,7 @@ these are my notes on how to build the image - this is NOT a shell script, its j
 
 download the Raspberry Pi 32 bit Bullseye (ARMv7) image from https://dietpi.com/downloads/images/
 
-image with Raspberry Pi imager and set the SSH option on 
+image with Raspberry Pi imager - enable SSH so you can remote login. you could also do the config with a keyboard and screen attached to the Pi
 
 login via SSH: root dietpi (default user/password for this image. don't need sudo because you are root)
 
@@ -109,7 +109,7 @@ uncomment the two hdmi_resolution lines
 
 comment the #dtoverlay=vc4-kms-v3d line if present
  
-remove audio, SPI, I2C etc if enabled
+comment the audio, SPI, I2C etc if enabled - the display driver uses its own SPI implementation
 
 add the gpio-key mappings for the keys:
  
@@ -126,9 +126,9 @@ add the gpio-key mappings for the keys:
 	gpio=27=ip,pu   # half battery level input
 	gpio=22=ip,pu # 3/4 battery level
 
-- thats it for changes to /boot/config.txt
+thats it for changes to /boot/config.txt
 
-- install software we need to build M8C and the FT driver
+- install software we need to build the TFT driver
 
 apt-get install git 
 
@@ -186,7 +186,7 @@ cd m8c
 
 make    # build M8C
 
--add autostart to file m8c.desktop to /root/.config/dietpi-desktop_setup.desktop with this in it:
+- create LXDE autostart file /root/.config/dietpi-desktop_setup.desktop/m8c.desktop with this in it:
 
 	[Desktop Entry]
 	Type=Application
@@ -201,16 +201,16 @@ nano .config/openbox/lxde-rc.xml  #add the fragment of xml below. it goes near t
         <decor>no</decor>	
         </application>
 		
-- to remove the menus comment the line @lxpanel --profile LXDE with a # in:
+- to remove the LXDE menus comment (with a #) the line @lxpanel --profile LXDE  in the file:
 
-nano /etc/xdg/lxsession/LXDE/autostart
+/etc/xdg/lxsession/LXDE/autostart
 
-- get rid of the cursor in X 
+- get rid of the cursor in LXDE, add the -nocursor option to the x command in
 
-nano /etc/X11/xinit/xserverrc # and add the -nocursor option to the x command
+/etc/X11/xinit/xserverrc 
 
- - turn off font antialiasing 
+ - to turn off font antialiasing change iXft/Antialias=1 to iXft/Antialias=0 in the file:
 
-nano /etc/xdg/lxsession/LXDE/desktop.conf  # change to iXft/Antialias=0
+/etc/xdg/lxsession/LXDE/desktop.conf  # 
 
 
