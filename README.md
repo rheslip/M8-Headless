@@ -2,6 +2,8 @@
  M8 Headless recipe using Raspberry Pi Zero 2 W
  Jan 2024
  
+ ![Alt text](https://github.com/rheslip/M8-Headless/Images/IMG_2588.jpg "DIY M8 Headless")
+ 
  Why?
 
 I wanted to try the Dirtywave M8 tracker without spending $$$ on the real deal. I have seen other similar projects using Raspberry Pi 4 but I figured it could be done with a Raspberry Pi Zero 2 W. This build is smaller, cheaper, consumes less power and if I do say so myself a lot more elegant than the other standalone M8 Headless projects I've seen.
