@@ -52,7 +52,11 @@ The headless version does not support audio input, MIDI, or touchscreen. If you 
  
  Wiring
  
-There is no wiring diagram. If you can't figure it out from the code and config files then you don't have the skills to complete this project. Wire the display to the PI's SPI port, the keyswitches to the GPIO pins specified in /boot/config.txt. I used a tact switch from Pi physical pin 5 to GND as a shutdown switch. This is enabled in /boot/config.txt.
+There is no wiring diagram. If you can't figure it out from the code and config files then you don't have the skills to complete this project. 
+
+Wire the display to the PI's SPI port, the keyswitches to the GPIO pins specified in /boot/config.txt. I made a drilling template to mount the Kailh switches on the .1" grid protoboard - the leads more or less fit on .1" grid but the plastic mounting pins do not.
+
+I used a tact switch from Pi physical pin 5 to GND as a shutdown switch. This is enabled in /boot/config.txt.
 
 You can wire the DAC directly to the Teensy's I2S pins for audio. Other M8 headless projects seem to loop USB audio from the Teensy to the PI to a DAC attached to the Pi which is not very elegant and chews needless CPU cycles. The UDA1334 module works with its default settings - connect Teensy LRCLK (pin 20), BLCK (pin 21) and OUT1A (pin 7) to the module. The headphone out is very loud so you will probably have to turn down the master level in the M8 mixer screen.
 
