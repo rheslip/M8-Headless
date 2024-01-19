@@ -29,7 +29,7 @@ The headless M8 firmware does not support audio input, MIDI, or touchscreen. If 
  
  Short USB OTG cable to connect the two: I used this one https://www.amazon.ca/dp/B07FBZ963D?psc=1&ref=ppx_yo2ov_dt_b_product_details
  
- 8 key switches with caps - I used the same Kailh switches that are used on the M8
+ 8 key switches with caps - I used the same Kailh 1350 low profile switches that are used on the M8. You can find these on Amazon or Aliexpress
  
  Display - one with an ILI9341 controller chip will make things easier. I used this one https://www.amazon.ca/gp/product/B0B1M9S9V6?tag=elfster04-20&th=1
  
