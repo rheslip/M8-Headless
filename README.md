@@ -98,15 +98,15 @@ image with Raspberry Pi imager - enable SSH so you can remote login. you could a
 
 login via SSH: root dietpi (default user/password for this image. don't need sudo because you are root)
 
-when you login via ssh, it runs an update script and then runs the config tool dietpi-launcher
+when you login via ssh, it runs an update script and then runs the config tool dietpi-launcher. Make these changes:
 
 	disable UART login
 	
 	set screen rez 640x480
 	
-	install LXDE desktop and I changed the ssh server to OpenSSH - takes a while
+	install LXDE desktop. I also changed the ssh server to OpenSSH which works well with WinSCP for remote file management
 	
-	you have to "exit with install" - it finishes the final installation
+	you have to "exit with install" - it finishes the final installation which takes a while
 	
 - changes to /boot/config.txt:
  
@@ -137,7 +137,7 @@ add the gpio-key mappings for the keys:
 
 thats it for changes to /boot/config.txt
 
-- install software we need to build the TFT driver
+- install tools we need to build the TFT driver
 
 apt-get install git 
 
@@ -159,13 +159,13 @@ mkdir build
 
 cd build
 
-- build line below assumes IlI9341 driver chip and low battery input on GPIO 17. I had to rotate my display as well
+- build line below assumes IlI9341 display driver chip and low battery input on GPIO 17. I had to rotate my display as well
 
 cmake -DILI9341=ON -DGPIO_TFT_DATA_CONTROL=24 -DGPIO_TFT_RESET_PIN=25 -DSPI_BUS_CLOCK_DIVISOR=6 -DDISPLAY_ROTATE_180_DEGREES=ON -DSTATISTICS=0 -DLOW_BATTERY_PIN=17 ..
 
-make -j  # this builds the TFT driver
+make -j    #this builds the TFT display code. 
 
-- create a systemd file to start up the driver
+- create a systemd file to start up the TFT service - its not a linux driver, it just runs in the background
 
 nano /etc/systemd/system/fbcp.service  # with contents:
 
@@ -177,9 +177,11 @@ nano /etc/systemd/system/fbcp.service  # with contents:
 	[Install]
 	WantedBy=multi-user.target
 
-#start the service - will start on next boot:
+#start the TFT driver service - will start on next boot:
 
 systemctl enable fbcp.service
+
+- build the M8C display software which runs in the LXDE desktop environment
 
 cd /root
 
@@ -189,22 +191,24 @@ mkdir code
 
 cd code
 
-git clone https://github.com/laamaa/m8c.git # get the M8C display code
+git clone https://github.com/laamaa/m8c.git   #get the M8C display code
 
 cd m8c
 
 make    # build M8C
 
-- create LXDE autostart file /root/.config/dietpi-desktop_setup.desktop/m8c.desktop with this in it:
+- create LXDE autostart file to launch M8C /root/.config/dietpi-desktop_setup.desktop/m8c.desktop with this in it:
 
 	[Desktop Entry]
 	Type=Application
 	Name=M8C
 	Exec=/root/code/m8c/m8c
 
-- these tweeks are needed to get LXDE to hide the top bar etc
+I didn't have to change the Teensy USB serial port, M8C seemed to find it. YMMV
 
-nano .config/openbox/lxde-rc.xml  #add the fragment of xml below. it goes near the bottom of the file in the applications section. this removes the decoration (bar above the app window)
+- tweeks needed to get LXDE to run M8C full screen:
+
+nano /root/.config/openbox/lxde-rc.xml  #add the fragment of xml below. it goes near the bottom of the file in the applications section. this removes the decoration (bar above the app window)
 
 	<application name="*">
         <decor>no</decor>	
@@ -214,12 +218,12 @@ nano .config/openbox/lxde-rc.xml  #add the fragment of xml below. it goes near t
 
 /etc/xdg/lxsession/LXDE/autostart
 
-- get rid of the cursor in LXDE, add the -nocursor option to the x command in
+- to remove the mouse cursor in LXDE add the -nocursor option to the x command in
 
 /etc/X11/xinit/xserverrc 
 
  - to turn off font antialiasing change iXft/Antialias=1 to iXft/Antialias=0 in the file:
 
-/etc/xdg/lxsession/LXDE/desktop.conf  # 
+/etc/xdg/lxsession/LXDE/desktop.conf   
 
 
