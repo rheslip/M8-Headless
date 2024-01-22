@@ -2,7 +2,9 @@
  M8 Headless recipe using Raspberry Pi Zero 2 W
  Jan 2024
  
- ![Alt text](https://github.com/rheslip/M8-Headless/blob/main/Images/IMG_2588.JPG "DIY M8 Headless")
+ short demo https://youtu.be/lyha2_3JbOE
+ 
+ ![Alt text](https://github.com/rheslip/M8-Headless/blob/main/Images/IMG_2594.JPG "DIY M8 Headless")
  ![Alt text](https://github.com/rheslip/M8-Headless/blob/main/Images/IMG_2592.JPG "DIY M8 Headless")
  
  Why?

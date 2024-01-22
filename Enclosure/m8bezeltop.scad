@@ -7,7 +7,7 @@ width=104;
 wall_thickness=1;
 top_thickness=1.0; // top layer over glass
 base_height=4;
-layer2_height=2.5;
+layer2_height=3.75;
 post_height=10;
 
 module screwhole(hole=3,height=10) {
