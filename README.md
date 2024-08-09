@@ -7,6 +7,8 @@
  ![Alt text](https://github.com/rheslip/M8-Headless/blob/main/Images/IMG_2594.jpg "DIY M8 Headless")
  ![Alt text](https://github.com/rheslip/M8-Headless/blob/main/Images/IMG_2592.JPG "DIY M8 Headless")
  
+ UPDATE Aug 9 2024 - M8 headless firmware 4.0 is out with some cool new features but the audio no longer works with a direct connection to the DAC as documented below. I probably should have kept my mouth shut...
+ 
  Why?
 
 I wanted to try the Dirtywave M8 tracker without spending $$$ on the real deal. I have seen other similar projects using Raspberry Pi 4 but I figured it could be done with a Raspberry Pi Zero 2 W. This build is smaller, cheaper, consumes less power and if I do say so myself is more elegant than the other standalone M8 Headless projects I've seen.
